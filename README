@@ -1,5 +1,5 @@
 Statistics::OLS 
-  - perform ordinary least squares and other bivariate statistics, v 0.06.
+  - perform ordinary least squares and other bivariate statistics, v 0.07.
 
 I wrote Statistics::OLS to perform Ordinary Least Squares (linear curve
 fitting) on two dimensional data: y = a + bx. The other simple
@@ -15,7 +15,12 @@ residuals.
 
 It is pretty simple to do two dimensional least squares, but much
 harder to do multiple regression, so Statistics::OLS is unlikely ever
-to work with multiple independent variables. 
+to work with multiple independent variables. The
+Statistics::Descriptive module performs useful univariate
+statistics and is well tested. The Perl Data Language (see CPAN) may
+also prove useful for statistics.  For a heavy duty, free, and open
+source statistical analysis language and environment, see the R
+project at http://www.R-project.org
 
 This is beta code, and has not been extensively tested. It has worked
 on a few published datasets. Feedback is welcome, particularly if you

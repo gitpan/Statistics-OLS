@@ -20,3 +20,6 @@ Revision history for Perl module Statistics::OLS.
 
 0.06 - 4 July 2000
        - allowed data in scientific (exponential) notation
+
+0.07 - 12 October 2000
+        - _sse fix for potential precision problems

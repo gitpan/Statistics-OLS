@@ -24,11 +24,14 @@
 # 	   - corrected pod documentation bug		  
 # 							    
 # 0.06 - 4 July 2000					  
-# 	 - allowed data in scientific (exponential) notation
+# 	   - allowed data in scientific (exponential) notation
+# 
+# 0.07 - 12 October 2000
+#          - _sse fix for potential precision problems
 
 package Statistics::OLS;
 
-$Statistics::OLS::VERSION = '0.06';
+$Statistics::OLS::VERSION = '0.07';
 
 use strict;
 
@@ -189,6 +192,7 @@ sub regress {
 
   # error (residual) sum of squares
   $self->{'_sse'} = $self->{'_ssdY'} - $self->{'_ssdX'} * $self->{'_b2'}**2;
+  $self->{'_sse'} = 0 if $self->{'_sse'} < 0; # potential precision problems
 
   # homoscedastic standard deviation of error term
   $self->{'_sigma'} = sqrt ($self->{'_sse'}/($n-2)); 
@@ -396,7 +400,7 @@ __END__
 
 =head1 NAME
 
-Statistics::OLS - perform ordinary least squares and associated statistics, v 0.06.
+Statistics::OLS - perform ordinary least squares and associated statistics, v 0.07.
 
 =head1 SYNOPSIS
 
