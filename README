@@ -1,5 +1,5 @@
 Statistics::OLS 
-  - perform ordinary least squares and other bivariate statistics, v 0.03.
+  - perform ordinary least squares and other bivariate statistics, v 0.06.
 
 I wrote Statistics::OLS to perform Ordinary Least Squares (linear curve
 fitting) on two dimensional data: y = a + bx. The other simple
@@ -17,10 +17,10 @@ It is pretty simple to do two dimensional least squares, but much
 harder to do multiple regression, so Statistics::OLS is unlikely ever
 to work with multiple independent variables. 
 
-This is an early draft, and has not been extensively tested. It has
-worked on a few published datasets. Feedback is welcome, particularly
-if you notice an error or try it with known results that are not
-reproduced correctly.
+This is beta code, and has not been extensively tested. It has worked
+on a few published datasets. Feedback is welcome, particularly if you
+notice an error or try it with known results that are not reproduced
+correctly.
 
 Installation:
 
@@ -32,7 +32,7 @@ usual
   make test
   make install
 
-should work. Since this is alpha code, you might prefer to install it
+should work. Since this is beta code, you might prefer to install it
 in a private library. In that case, replace the first command with
 
   perl Makefile.pl PREFIX=/home/sally/myperl

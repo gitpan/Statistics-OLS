@@ -3,9 +3,32 @@
 #                     by Sanford Morton <smorton@pobox.com>               #
 #==========================================================================#
 
+# Revision history for Perl module Statistics::OLS.	  
+# 							    
+# 0.01 - 22 March 1998					  
+# 	   - original version				  
+# 							    
+# 0.02 - 29 March 1998					  
+# 	   - corrected array bounds check bug in setData	  
+# 	   - included check for divide by zero in standard error of
+# 	     coefficients and t-stats             	  
+# 							    
+# 0.03 - 31 May 1998					  
+# 	   - placed module into standard format using h2xs  
+# 							    
+# 0.04 - 13 July 1998 					  
+# 	   - changed the name from Statistics::Ols to Statistics::OLS
+# 							    
+# 0.05 - 15 Sep 1999					  
+# 	   - corrected error checking bug			  
+# 	   - corrected pod documentation bug		  
+# 							    
+# 0.06 - 4 July 2000					  
+# 	 - allowed data in scientific (exponential) notation
+
 package Statistics::OLS;
 
-$Statistics::OLS::VERSION = '0.04';
+$Statistics::OLS::VERSION = '0.06';
 
 use strict;
 
@@ -36,7 +59,7 @@ sub setData {
 
   if (ref $arrayref2) { # passing data as two data arrays (x0 ...) (y0 ...)
 
-    unless ($#$arrayref1 = $#$arrayref2) { # error checking
+    unless ($#$arrayref1 == $#$arrayref2) { # error checking
       $self->{'_errorMessage'} = "The dataset does not contain an equal number of x and y values. ";
       return 0;
     }
@@ -49,11 +72,11 @@ sub setData {
     # check whether data are equal and numeric
     for ($i=0; $i<=$#$arrayref1; $i++) {
 
-      if ($$arrayref1[$i] =~ /[^\d\.-]/) {
+      unless ($$arrayref1[$i] =~ /^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/) {
 	$self->{'_errorMessage'} = "The data element $$arrayref1[$i] is non-numeric. ";
 	return 0;
       }
-      if ($$arrayref2[$i] =~ /[^\d\.-]/) {
+      unless ($$arrayref2[$i] =~ /^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/) {
 	$self->{'_errorMessage'} = "The data element $$arrayref2[$i] is non-numeric. ";
 	return 0;
       }
@@ -78,7 +101,7 @@ sub setData {
 
     # check whether data are numeric
     for ($i=0; $i<=$#$arrayref1; $i++) {
-      if ($$arrayref1[$i] =~ /[^\d\.-]/) {
+      unless ($$arrayref1[$i] =~ /^([+-]?)(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?$/) {
 	$self->{'_errorMessage'} = "The data element $$arrayref1[$i] is non-numeric.";
 	return 0;
       }
@@ -373,7 +396,7 @@ __END__
 
 =head1 NAME
 
-Statistics::OLS - perform ordinary least squares and associated statistics, v 0.04.
+Statistics::OLS - perform ordinary least squares and associated statistics, v 0.06.
 
 =head1 SYNOPSIS
 
@@ -422,10 +445,10 @@ It is pretty simple to do two dimensional least squares, but much
 harder to do multiple regression, so OLS is unlikely ever to work
 with multiple independent variables.
 
-This is an early draft (alpha code) and has not been extensively
-tested. It has worked on a few published datasets. Feedback is
-welcome, particularly if you notice an error or try it with known
-results that are not reproduced correctly.
+This is a beta code and has not been extensively tested. It has worked
+on a few published datasets. Feedback is welcome, particularly if you
+notice an error or try it with known results that are not reproduced
+correctly.
 
 =head1 USAGE
 
@@ -482,15 +505,15 @@ In your script, you could test for errors like:
     $ls->setData (\@data) or die( $ls->error() );
 
 In the current version, only numerals, decimal points (apologies to
-Europeans) and minus signs are permitted.  Scientific notation
-(1.7E10), currencies ($), time (11:23am) or dates (23/05/98) are not
-yet supported and will generate errors. I hope to figure these out
-sometime soon.
+Europeans), scientific notation (1.7E10) and minus signs are
+permitted.  Currencies ($), time (11:23am) or dates (23/05/98) are not
+yet supported and will generate errors. I may figure these out
+someday.
 
 
 =head2 Perform the regression: regress()
 
-    $ls->regress() or die ( $self->error() );
+    $ls->regress() or die ( $ls->error() );
 
 This performs most of the calculations. Call this method after setting
 the data, but before asking for any regressions results. If you change
@@ -552,7 +575,7 @@ This module is beta code, so it is not guaranteed to work right.
 I have not exhaustively tested it.
 
 Possible future work includes support for other data formats, such as
-scientific notation, date, time and currency.
+date, time and currency.
 
 Generalization to multiple regression is probably not in the cards,
 since it is more than an order of magnitude more difficult. Better to
@@ -564,19 +587,20 @@ not happen soon, since it sounds like a big project.
 
 Comments and bug reports are welcome.
 
-=head1 Author
+=head1 AUTHOR
 
 Copyright (c) 1998 by Sanford Morton, smorton@pobox.com.  All rights
 reserved.  This program is free software; you can redistribute it
-and/or modify it under the same terms as Perl itself. The temporary
-home for this module is http://www.pobox.com/smorton/modules/
-unless and until it is placed on CPAN.
+and/or modify it under the same terms as Perl itself. 
+
+This work is dedicated to the memory of Dr. Andrew Morton, who requested it. 
+I<Requiescat in pace>, my friend.
 
 =head1 SEE ALSO
 
 The Statistics::Descriptive(1) module performs useful univariate
 statistics and is well tested. The Perl Data Language (see CPAN) may
-also prove useful for statistics.
+also prove useful for statistics. 
 
 Simple linear regression is discussed in all econometrics and most
 probablility and statistics texts. I used E<Basic Econometrics> 2nd
